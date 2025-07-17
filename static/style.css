@@ -275,6 +275,19 @@ video {
     /* ... 其他原有样式 ... */
 }
 
+.segment-item.highlighted-segment {
+    border: 2px solid #007bff;
+    /* 蓝色边框 */
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+    /* 蓝色阴影 */
+    background-color: #e6f7ff;
+    /* 浅蓝色背景 */
+    transform: scale(1.01);
+    /* 轻微放大效果 */
+    transition: all 0.2s ease-in-out;
+    /* 平滑过渡 */
+}
+
 .segment-item .segment-duration {
     font-size: 0.9em;
     color: #6c757d;

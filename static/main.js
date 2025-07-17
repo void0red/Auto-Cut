@@ -11,7 +11,7 @@ const currentTimeDisplay = document.getElementById('currentTimeDisplay');
 const currentSegmentDisplay = document.getElementById('currentSegmentDisplay');
 // ⬇️ 移除 loadSegmentsBtn 的引用
 const autoSegmentsBtn = document.getElementById('autoSegmentsBtn');
-
+let highlightedSegmentIndex = -1;
 
 let currentVideoFilename = '';
 let startTime = -1;
@@ -77,7 +77,39 @@ async function loadSegments() {
 // 实时更新视频播放时间显示
 videoPlayer.addEventListener('timeupdate', () => {
     currentTimeDisplay.textContent = formatTime(videoPlayer.currentTime);
+    highlightCurrentSegment(videoPlayer.currentTime);
 });
+
+function highlightCurrentSegment(currentTime) {
+    let newHighlightedIndex = -1;
+    for (let i = 0; i < segments.length; i++) {
+        const segment = segments[i];
+        // 增加一点容错，如果当前时间在片段开始前0.1秒到片段结束前0.1秒之间
+        // 确保在片段快结束时，高亮不会过早消失
+        if (currentTime >= segment.start - 0.1 && currentTime <= segment.end + 0.1) {
+            newHighlightedIndex = i;
+            break;
+        }
+    }
+
+    if (newHighlightedIndex !== highlightedSegmentIndex) {
+        // 移除旧的高亮
+        if (highlightedSegmentIndex !== -1) {
+            const oldHighlightedItem = document.querySelector(`.segment-item[data-index="${highlightedSegmentIndex}"]`);
+            if (oldHighlightedItem) {
+                oldHighlightedItem.classList.remove('highlighted-segment');
+            }
+        }
+        // 添加新的高亮
+        if (newHighlightedIndex !== -1) {
+            const newHighlightedItem = document.querySelector(`.segment-item[data-index="${newHighlightedIndex}"]`);
+            if (newHighlightedItem) {
+                newHighlightedItem.classList.add('highlighted-segment');
+            }
+        }
+        highlightedSegmentIndex = newHighlightedIndex;
+    }
+}
 
 // 视频选择下拉菜单的事件监听
 videoSelect.addEventListener('change', () => {
@@ -253,6 +285,7 @@ function renderSegments() {
             if (seg.is_clipped) {
                 segmentItem.classList.add('clipped');
             }
+            segmentItem.setAttribute('data-index', index);
 
             const inputDisabledAttr = seg.is_clipped ? 'disabled' : '';
             const duration = seg.end - seg.start;
@@ -317,6 +350,20 @@ function renderSegments() {
     // ⬇️ 修改：根据是否有片段或视频选择，启用/禁用剪辑按钮和自动分段按钮
     cutVideoBtn.disabled = (segments.length === 0 || !currentVideoFilename);
     autoSegmentsBtn.disabled = !currentVideoFilename; // 只有选择了视频才能自动分段
+
+
+    if (videoPlayer.readyState > 0) { // 确保视频已加载，否则 currentTime 可能为0
+        highlightCurrentSegment(videoPlayer.currentTime);
+    } else {
+        // 如果视频还没加载好，确保移除所有高亮
+        if (highlightedSegmentIndex !== -1) {
+            const oldHighlightedItem = document.querySelector(`.segment-item[data-index="${highlightedSegmentIndex}"]`);
+            if (oldHighlightedItem) {
+                oldHighlightedItem.classList.remove('highlighted-segment');
+            }
+            highlightedSegmentIndex = -1;
+        }
+    }
 }
 
 // 剪辑视频按钮的事件监听
