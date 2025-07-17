@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音乐视频剪辑工具</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎵 音乐视频剪辑工具 ✂️</h1>
+        <p>欢迎使用视频剪辑工具。请选择一个视频，在播放过程中标记你感兴趣的片段，然后点击“添加片段”。你可以直接修改片段列表中的时间并按回车确认。</p>
+
+        <hr>
+
+        <div class="video-selection-section">
+            <h2>1. 选择视频</h2>
+            <select id="videoSelect">
+                <option value="">-- 请选择一个视频文件 --</option>
+                {% for video in videos %}
+                <option value="{{ video }}">{{ video }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <hr>
+
+        <div class="video-player-section">
+            <h2>2. 播放与标记</h2>
+            <video id="videoPlayer" controls style="display: none;">
+                您的浏览器不支持视频标签。
+            </video>
+            <div class="current-time">当前播放时间: <span id="currentTimeDisplay">00:00:00</span></div>
+            <div class="controls">
+                <button id="setStartTimeBtn">标记开始点</button>
+                <button id="setEndTimeBtn">标记结束点</button>
+                <button id="addSegmentBtn">✨ 添加片段到列表</button>
+            </div>
+            <p><strong>当前标记状态：</strong> <span id="currentSegmentDisplay">无</span></p>
+        </div>
+
+        <hr>
+
+        <div class="segment-list-section">
+            <h2>3. 待剪辑片段列表</h2>
+            <div class="segment-controls">
+                <button id="autoSegmentsBtn" disabled>🤖 自动分段</button>
+                <button id="cutVideoBtn" disabled>🚀 开始剪辑视频</button>
+            </div>
+            <div id="segmentList">
+                <p id="noSegmentsMessage">暂无已添加的片段。</p>
+            </div>
+        </div>
+
+        <div id="message" class="message" style="display: none;"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+
+</html>
