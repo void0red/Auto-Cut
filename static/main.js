@@ -217,6 +217,10 @@ forward1sBtn.addEventListener('click', () => {
     videoPlayer.currentTime += 1;
 });
 
+currentTimeDisplay.addEventListener('click', () => {
+    navigator.clipboard.writeText(currentTimeDisplay.textContent);
+});
+
 // 从列表中移除片段
 function removeSegment(index) {
     segments.splice(index, 1);
