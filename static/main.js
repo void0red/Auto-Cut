@@ -9,8 +9,12 @@ const noSegmentsMessage = document.getElementById('noSegmentsMessage');
 const messageDiv = document.getElementById('message');
 const currentTimeDisplay = document.getElementById('currentTimeDisplay');
 const currentSegmentDisplay = document.getElementById('currentSegmentDisplay');
-// ⬇️ 移除 loadSegmentsBtn 的引用
 const autoSegmentsBtn = document.getElementById('autoSegmentsBtn');
+const backward3sBtn = document.getElementById('backward3sBtn');
+const forward3sBtn = document.getElementById('forward3sBtn');
+const backward1sBtn = document.getElementById('backward1sBtn');
+const forward1sBtn = document.getElementById('forward1sBtn');
+
 let highlightedSegmentIndex = -1;
 
 let currentVideoFilename = '';
@@ -195,6 +199,22 @@ addSegmentBtn.addEventListener('click', () => {
     endTime = -1;
     currentSegmentDisplay.textContent = '无';
     renderSegments();
+});
+
+backward3sBtn.addEventListener('click', () => {
+    videoPlayer.currentTime -= 3;
+});
+
+forward3sBtn.addEventListener('click', () => {
+    videoPlayer.currentTime += 3;
+});
+
+backward1sBtn.addEventListener('click', () => {
+    videoPlayer.currentTime -= 1;
+});
+
+forward1sBtn.addEventListener('click', () => {
+    videoPlayer.currentTime += 1;
 });
 
 // 从列表中移除片段

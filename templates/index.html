@@ -32,7 +32,15 @@
             <video id="videoPlayer" controls style="display: none;">
                 您的浏览器不支持视频标签。
             </video>
-            <div class="current-time">当前播放时间: <span id="currentTimeDisplay">00:00:00</span></div>
+
+            <div class="current-time">
+                <span id="backward3sBtn" style="cursor: pointer; font-size: 1.5em;">⏪</span>
+                <span id="backward1sBtn" style="cursor: pointer; font-size: 1.5em;">◀️</span>
+                当前播放时间: <span id="currentTimeDisplay">00:00:00</span>
+                <span id="forward1sBtn" style="cursor: pointer; font-size: 1.5em;">▶️</span>
+                <span id="forward3sBtn" style="cursor: pointer; font-size: 1.5em;">⏩</span>
+            </div>
+
             <div class="controls">
                 <button id="setStartTimeBtn">标记开始点</button>
                 <button id="setEndTimeBtn">标记结束点</button>
