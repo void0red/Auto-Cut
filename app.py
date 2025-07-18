@@ -4,7 +4,7 @@ import subprocess
 from infer import extract_music
 import json
 from config import *
-
+from asr import asr
 
 app = Flask(__name__)
 
@@ -29,7 +29,7 @@ def serve_video(filename):
     return send_from_directory(VIDEO_FOLDER, filename)
 
 
-@app.route("/cut_video/<filename>")
+@app.route(f"/{CUT_VIDEO_FOLDER}/<filename>")
 def serve_cut_video(filename):
     """用于从 'cut_videos' 文件夹提供剪辑后的视频文件"""
     return send_from_directory(CUT_VIDEO_FOLDER, filename)
@@ -96,13 +96,16 @@ def process_cut():
             print(f"执行剪辑命令 (片段 {i+1}): {' '.join(command)}")
             subprocess.run(command, check=True, capture_output=True)
 
-            output_urls.append(f"/cut_video/{output_segment_filename}")
+            output_urls.append(f"/{CUT_VIDEO_FOLDER}/{output_segment_filename}")
 
         if not output_urls:
             return (
                 jsonify({"status": "error", "message": "没有有效的片段可供剪辑。"}),
                 400,
             )
+
+        for i in output_urls:
+            asr(f"{CUT_VIDEO_FOLDER}/{i}")
 
         return jsonify(
             {

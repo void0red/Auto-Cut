@@ -1,2 +1,4 @@
 flask
 inaSpeechSegmenter
+funasr
+openai
