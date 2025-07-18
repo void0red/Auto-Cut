@@ -5,6 +5,7 @@ from infer import extract_music
 import json
 from config import *
 from asr import asr
+import threading
 
 app = Flask(__name__)
 
@@ -98,14 +99,15 @@ def process_cut():
 
             output_urls.append(f"/{CUT_VIDEO_FOLDER}/{output_segment_filename}")
 
+            threading.Thread(
+                target=asr, args=(f"{CUT_VIDEO_FOLDER}/{output_segment_filename}",)
+            ).start()
+
         if not output_urls:
             return (
                 jsonify({"status": "error", "message": "没有有效的片段可供剪辑。"}),
                 400,
             )
-
-        for i in output_urls:
-            asr(f"{CUT_VIDEO_FOLDER}/{i}")
 
         return jsonify(
             {
