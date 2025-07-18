@@ -70,9 +70,7 @@ def process_cut():
                 continue
 
             # 为每个输出片段生成一个唯一的名称
-            output_segment_filename = (
-                f'{video_filename.split(".")[0]}_segment_{i+1}.mp4'
-            )
+            output_segment_filename = f"{video_filename}_segment_{i+1}.mp4"
             output_segment_path = os.path.join(
                 CUT_VIDEO_FOLDER, output_segment_filename
             )
