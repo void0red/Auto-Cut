@@ -422,10 +422,7 @@ cutVideoBtn.addEventListener('click', async () => {
         const result = await response.json();
 
         if (result.status === 'success') {
-            let outputHtml = '🎉 剪辑成功！以下是剪辑后的片段：<ul>';
             result.outputUrls.forEach((url, i) => {
-                outputHtml += `<li>片段 ${i + 1}: <a href="${url}" target="_blank">下载/播放</a></li>`;
-
                 const originalSegment = unclippedSegments[i];
                 const originalIndexInFullList = segments.findIndex(seg =>
                     !seg.is_clipped && seg.start === originalSegment.start && seg.end === originalSegment.end
@@ -436,8 +433,7 @@ cutVideoBtn.addEventListener('click', async () => {
                     segments[originalIndexInFullList].output_url = url;
                 }
             });
-            outputHtml += '</ul>';
-            showMessage(outputHtml, 'success');
+            showMessage('🎉 剪辑成功！', 'success');
             renderSegments();
         } else {
             showMessage(`❌ 剪辑失败: ${result.message}`, 'error');
