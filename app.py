@@ -4,8 +4,8 @@ import subprocess
 from infer import extract_music
 import json
 from config import *
-from asr import asr
-import threading
+# from asr import asr
+# import threading
 
 app = Flask(__name__)
 
@@ -99,9 +99,9 @@ def process_cut():
 
             output_urls.append(f"/{CUT_VIDEO_FOLDER}/{output_segment_filename}")
 
-            threading.Thread(
-                target=asr, args=(f"{CUT_VIDEO_FOLDER}/{output_segment_filename}",)
-            ).start()
+            # threading.Thread(
+            #     target=asr, args=(f"{CUT_VIDEO_FOLDER}/{output_segment_filename}",)
+            # ).start()
 
         if not output_urls:
             return (

@@ -1,4 +1,5 @@
 flask
 inaSpeechSegmenter
-funasr
 openai
+pyncm
+pythonmonkey
