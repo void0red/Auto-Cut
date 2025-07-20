@@ -103,7 +103,7 @@ def get_lyric(id) -> str:
     return GetTrackLyrics(id)["lrc"]["lyric"].strip()
 
 
-def get_name_lyric(audio: str):
+def get_name_lyric_by_afp(audio: str):
     name, id = get_name_id(audio)
     if not name:
         return None, ""
@@ -112,6 +112,6 @@ def get_name_lyric(audio: str):
 
 
 if __name__ == "__main__":
-    fn = "cut_videos/【木木sylvia 6.30 歌切】《浮光》 穿越千年的温柔告白.mp4"
-    name, lyric = get_name_lyric(fn)
+    fn = "cut_videos/mumu-7.08.mp4_segment_1.mp4"
+    name, lyric = get_name_lyric_by_afp(fn)
     print(name, lyric)

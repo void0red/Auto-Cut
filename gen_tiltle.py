@@ -2,8 +2,9 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import os
 import re
-from afp import get_name_lyric
+from afp import get_name_lyric_by_afp
 from pathlib import Path
+from asr import get_name_lyric_by_asr
 
 load_dotenv()
 
@@ -38,6 +39,18 @@ def gen_title(date: str, name: str, title: str):
     return f"【木木sylvia {date} 歌切】《{name}》{title}"
 
 
+def gen_title_entry(video: str):
+    try:
+        date = extract_date_from_filename(video)
+        name, lyric = get_name_lyric_by_afp(video)
+        if not name:
+            name, lyric = get_name_lyric_by_asr(video)
+        title = gen_title(date, name, infer_title(lyric))
+        return title
+    except:
+        return ""
+
+
 if __name__ == "__main__":
     for i in os.listdir("cut_videos"):
         if not i.endswith("mp4"):
@@ -45,13 +58,6 @@ if __name__ == "__main__":
         if i.startswith("【"):
             continue
         fn = os.path.join("cut_videos", i)
-        name, lyric = get_name_lyric(fn)
-        if not name:
-            print(f"infer failed {fn}")
-            continue
-        print(f"{fn}->{name}")
-        date = extract_date_from_filename(fn)
-        title = infer_title(lyric)
-        title = gen_title(date, name, title)
+        title = gen_title_entry(fn)
         print(f"{fn}->{title}")
         os.rename(fn, Path(fn).with_name(title + ".mp4"))
